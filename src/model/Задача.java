@@ -67,16 +67,12 @@ public class Задача {
 		this.статуc = статуc;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Задача задача = (Задача) o;
-		return Objects.equals(название, задача.название) && Objects.equals(описание, задача.описание) && Objects.equals(ид, задача.ид) && Objects.equals(статуc, задача.статуc);
+	public void setНазвание(String название) {
+		this.название = название;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(название, описание, ид, статуc);
+	public void setОписание(String описание) {
+		this.описание = описание;
 	}
+
 }

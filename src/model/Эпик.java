@@ -10,6 +10,19 @@ import java.util.ArrayList;
 public class Эпик extends Задача {
 	ArrayList<Задача> подзадачи = new ArrayList<>();
 
+//	@Override
+//	public String getСтатуc() {
+//		return getСтатуc();
+//	}
+
+	@Override
+	public void setСтатуc(String статуc) {
+		super.setСтатуc(вычислитьСтатус());
+	}
+
+	private String вычислитьСтатус() {
+		return "Вычесленный статус";
+	}
 
 	@Override
 	public boolean equals(Object o) {
