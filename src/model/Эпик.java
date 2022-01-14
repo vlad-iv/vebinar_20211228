@@ -3,12 +3,20 @@ package model;
 import java.util.ArrayList;
 
 /**
- * // TODO .
+ * Эпик.
  *
  * @author Vladimir Ivanov (ivanov.vladimir.l@gmail.com)
  */
 public class Эпик extends Задача {
-	ArrayList<Задача> подзадачи = new ArrayList<>();
+	ArrayList<ПодЗадача> подзадачи = new ArrayList<>();
+
+	public Эпик(String название, String описание, Integer ид, String статуc) {
+		super(название, описание, ид, статуc);
+	}
+
+	public Эпик(String название, String описание) {
+		super(название, описание, null);
+	}
 
 //	@Override
 //	public String getСтатуc() {
@@ -39,5 +47,9 @@ public class Эпик extends Задача {
 
 	public void добавитьПозадачу(ПодЗадача задача) {
 		подзадачи.add(задача);
+	}
+
+	public ArrayList<ПодЗадача> getПодзадачи() {
+		return подзадачи;
 	}
 }

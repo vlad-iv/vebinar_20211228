@@ -2,10 +2,8 @@ package model;
 
 import static model.Статус.NEW;
 
-import java.util.Objects;
-
 /**
- * // TODO .
+ * Задача.
  *
  * @author Vladimir Ivanov (ivanov.vladimir.l@gmail.com)
  */

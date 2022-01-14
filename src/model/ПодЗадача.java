@@ -1,14 +1,23 @@
 package model;
 
 /**
- * // TODO .
+ * Под задача.
  *
  * @author Vladimir Ivanov (ivanov.vladimir.l@gmail.com)
  */
 public class ПодЗадача extends Задача {
-	Эпик эпик;
+	Integer эпикИд;
 
-	public Эпик getЭпик() {
-		return эпик;
+	public ПодЗадача(Integer эпикИд) {
+		this.эпикИд = эпикИд;
+	}
+
+	public ПодЗадача(String название, String описание, Integer ид, String статуc, Integer эпикИд) {
+		super(название, описание, ид, статуc);
+		this.эпикИд = эпикИд;
+	}
+
+	public Integer getЭпикИд() {
+		return эпикИд;
 	}
 }

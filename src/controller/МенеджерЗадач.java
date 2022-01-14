@@ -8,7 +8,7 @@ import java.util.HashMap;
 import model.Задача;
 
 /**
- * // TODO .
+ * Менеджер задач.
  *
  * @author Vladimir Ivanov (ivanov.vladimir.l@gmail.com)
  */

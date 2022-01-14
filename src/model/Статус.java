@@ -1,7 +1,7 @@
 package model;
 
 /**
- * // TODO .
+ * Статусы задач.
  *
  * @author Vladimir Ivanov (ivanov.vladimir.l@gmail.com)
  */
