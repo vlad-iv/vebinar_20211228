@@ -1,11 +1,13 @@
 import static model.Статус.IN_PROGRESS;
 import static model.Статус.NEW;
 
+import controller.Менеджер;
+import controller.Менеджеры;
 import model.Эпик;
 
 public class Main {
 	public static void main(String[] args) {
-		final ВПамятиМенеджер менеджер = new ВПамятиМенеджер();
+		final Менеджер менеджер = Менеджеры.поУмолчанию();
 		Эпик эпик1 = new Эпик("Эпик 1", "Эпик описание 1");
 
 		final Эпик эпик1Новый = менеджер.создатьЭпик(эпик1);
