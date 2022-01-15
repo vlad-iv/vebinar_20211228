@@ -35,4 +35,6 @@ public interface Менеджер {
 	void удалитьПодЗадачуПоИД(Integer ид);
 
 	void удалитьЭпикПоИД(Integer ид);
+
+	List<Задача> история();
 }

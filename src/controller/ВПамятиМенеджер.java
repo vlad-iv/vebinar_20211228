@@ -4,6 +4,7 @@ import static model.Статус.NEW;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import model.Задача;
@@ -43,12 +44,25 @@ public class ВПамятиМенеджер implements Менеджер {
 
 	@Override
 	public ПодЗадача найтиПодЗадачуПоИД(Integer ид) {
-		return подЗадачи.get(ид);
+		final ПодЗадача подЗадача = подЗадачи.get(ид);
+		if (история.size() == 10) {
+			история.remove(0);
+		}
+		история.add(подЗадача);
+		return подЗадача;
 	}
 
 	@Override
 	public Эпик найтиЭпикПоИД(Integer ид) {
-		return эпики.get(ид);
+		final Эпик эпик = эпики.get(ид);
+		if (эпик == null) {
+			return null;
+		}
+		if (история.size() == 10) {
+			история.remove(0); // Удалить в начале
+		}
+		история.add(эпик); // Добавить в конец
+		return эпик;
 	}
 
 	@Override
@@ -112,5 +126,13 @@ public class ВПамятиМенеджер implements Менеджер {
 		for (ПодЗадача подЗадача : эпик.getПодзадачи()) {
 			подЗадачи.remove(подЗадача.getИд());
 		}
+	}
+
+	//	List<Задача> история = new ArrayList<>(10);
+	List<Задача> история = new LinkedList<>();
+
+	@Override
+	public List<Задача> история() {
+		return история;
 	}
 }
