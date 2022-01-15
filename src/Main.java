@@ -5,7 +5,7 @@ import model.Эпик;
 
 public class Main {
 	public static void main(String[] args) {
-		final Менеджер менеджер = new Менеджер();
+		final ВПамятиМенеджер менеджер = new ВПамятиМенеджер();
 		Эпик эпик1 = new Эпик("Эпик 1", "Эпик описание 1");
 
 		final Эпик эпик1Новый = менеджер.создатьЭпик(эпик1);

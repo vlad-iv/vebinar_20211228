@@ -1,7 +1,10 @@
+package controller;
+
 import static model.Статус.NEW;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import model.Задача;
 import model.ПодЗадача;
@@ -12,7 +15,7 @@ import model.Эпик;
  *
  * @author Vladimir Ivanov (ivanov.vladimir.l@gmail.com)
  */
-public class Менеджер {
+public class ВПамятиМенеджер implements Менеджер {
 //	МенеджерЗадач менеджерЗадач = new МенеджерЗадач();
 
 	HashMap<Integer, ПодЗадача> подЗадачи = new HashMap<>();
@@ -22,27 +25,33 @@ public class Менеджер {
 	int генераторИДЭпики = 0;
 
 	//	Получение списка всех эпиков.
-	public ArrayList<Эпик> получитьВсеЭпики() {
+	@Override
+	public List<Эпик> получитьВсеЭпики() {
 		return new ArrayList<>(эпики.values());
 	}
 
 	//	Получение списка всех подзадач определённого эпика.
-	public ArrayList<ПодЗадача> получитьВсеПодзадачиПоЭпику(Эпик эпик) {
+	@Override
+	public List<ПодЗадача> получитьВсеПодзадачиПоЭпику(Эпик эпик) {
 		return эпики.get(эпик.getИд()).getПодзадачи();
 	}
 
-	public ArrayList<Задача> получитьВсеПодзадачиПоЭпику(Integer эпикИД) {
+	@Override
+	public List<Задача> получитьВсеПодзадачиПоЭпику(Integer эпикИД) {
 		return new ArrayList<>();
 	}
 
+	@Override
 	public ПодЗадача найтиПодЗадачуПоИД(Integer ид) {
 		return подЗадачи.get(ид);
 	}
 
+	@Override
 	public Эпик найтиЭпикПоИД(Integer ид) {
 		return эпики.get(ид);
 	}
 
+	@Override
 	public ПодЗадача создатьПодЗадачу(ПодЗадача задача) {
 		if (!эпики.containsKey(задача.getЭпикИд())) {
 			System.out.println("Не найден эпик ид=" + задача.getЭпикИд());
@@ -56,6 +65,7 @@ public class Менеджер {
 		return подЗадачаНовая;
 	}
 
+	@Override
 	public Эпик создатьЭпик(Эпик эпик) {
 		int ид = ++генераторИДЭпики;
 		Эпик эпикНовый = new Эпик(эпик.getНазвание(), эпик.getОписание(), ид, NEW);
@@ -63,6 +73,7 @@ public class Менеджер {
 		return эпикНовый;
 	}
 
+	@Override
 	public void обновитьПодЗадачу(ПодЗадача подЗадачаИзмененная) {
 		final ПодЗадача подЗадачаСохраненная = подЗадачи.get(подЗадачаИзмененная.getИд());
 		if (подЗадачаСохраненная == null) {
@@ -72,6 +83,7 @@ public class Менеджер {
 //			рассчитатьИСохранитьСтатусЭпика(подЗадачаИзмененная.getЭпик()); // TODO
 	}
 
+	@Override
 	public void обновитьЭпик(Эпик эпик) {
 		final Эпик эпикСохраненный = эпики.get(эпик.getИд());
 		if (эпикСохраненный == null) {
@@ -81,6 +93,7 @@ public class Менеджер {
 		эпикСохраненный.setОписание(эпик.getОписание());
 	}
 
+	@Override
 	public void удалитьПодЗадачуПоИД(Integer ид) {
 		final ПодЗадача подЗадача = подЗадачи.remove(ид);
 		if (подЗадача == null) {
@@ -90,6 +103,7 @@ public class Менеджер {
 		эпик.getПодзадачи().remove(подЗадача);
 	}
 
+	@Override
 	public void удалитьЭпикПоИД(Integer ид) {
 		final Эпик эпик = эпики.remove(ид);
 		if (эпик == null) {
