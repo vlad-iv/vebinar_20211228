@@ -23,7 +23,5 @@ public interface TaskManager {
 
 	void deleteSubTask(int id);
 
-	void calculateStatus(Epic epicSaved);
-
 	List<Task> getHistory();
 }
