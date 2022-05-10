@@ -9,13 +9,13 @@ import model.SubTask;
 import model.Task;
 
 public class InMemoryTaskManager implements TaskManager {
-	HashMap<Integer, Task> tasks;
+	protected HashMap<Integer, Task> tasks;
 	HashMap<Integer, Epic> epics;
 	HashMap<Integer, SubTask> subTasks;
 
 	HistoryManager historyStorage;
 
-	int seq = 0;
+	protected int seq = 0;
 
 	private int generateId() {
 		return ++seq;
