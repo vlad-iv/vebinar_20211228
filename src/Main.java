@@ -1,7 +1,10 @@
+import java.io.File;
+
 import model.Epic;
 import model.Status;
 import model.SubTask;
 import model.Task;
+import service.FileBackedTaskManager;
 import service.Managers;
 import service.TaskManager;
 
@@ -27,8 +30,13 @@ public class Main {
 		Epic epic = taskManager.createEpic(new Epic("Новый эпик", "описание"));
 		System.out.println("Create epic: " + epic);
 
-		SubTask subTask = taskManager.createSubTask(new SubTask("Новая задача", Status.IN_PROGRESS, "описание подзадачи", epic));
+		SubTask subTask = taskManager.createSubTask(new SubTask("Новая задача", Status.IN_PROGRESS, "описание подзадачи", epic.getId()));
 		System.out.println("Create subtask: " + subTask);
+
+//		TaskManager taskManagerReload = FileBackedTaskManager.loadFromFile(Path.of("task.csv"));
+
+		TaskManager taskManagerReload = FileBackedTaskManager.loadFromFile(new File("task.csv"));
+		// TODO taskManager == taskManagerReload
 
 	}
 
