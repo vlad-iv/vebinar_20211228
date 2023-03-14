@@ -6,7 +6,7 @@ import java.util.List;
 public class Epic extends Task {
 	List<SubTask> subTasks = new ArrayList<>();
 
-	public Epic(String name, String status, String description) {
+	public Epic(String name, Status status, String description) {
 		super(name, status, description);
 	}
 
@@ -19,7 +19,7 @@ public class Epic extends Task {
 	}
 
 	public void removeTask(SubTask subTask) {
-
+		subTasks.remove(subTask);
 	}
 
 	public void calculateEpicStatus() {

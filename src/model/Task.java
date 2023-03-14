@@ -3,10 +3,10 @@ package model;
 public class Task {
 	private int id;
 	private String name;
-	private String status;
+	private Status status;
 	private String description;
 
-	public Task(String name, String status, String description) {
+	public Task(String name, Status status, String description) {
 		this.name = name;
 		this.status = status;
 		this.description = description;
@@ -32,11 +32,11 @@ public class Task {
 		this.name = name;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
@@ -49,6 +49,18 @@ public class Task {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Task task)) return false;
+
+		return id == task.id;
+	}
+
+	@Override
+	public int hashCode() {
+		return id;
+	}
+
 	public String toString() {
 		return "Task{" +
 				"id=" + id +
