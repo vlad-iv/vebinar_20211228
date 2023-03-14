@@ -6,6 +6,13 @@ public class Task {
 	private Status status;
 	private String description;
 
+	public Task(int id, String name, Status status, String description) {
+		this.id = id;
+		this.name = name;
+		this.status = status;
+		this.description = description;
+	}
+
 	public Task(String name, Status status, String description) {
 		this.name = name;
 		this.status = status;
@@ -61,7 +68,6 @@ public class Task {
 		return id;
 	}
 
-	@Override
 	public String toString() {
 		return "Task{" +
 				"id=" + id +

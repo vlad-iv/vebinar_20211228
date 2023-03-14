@@ -7,6 +7,10 @@ public class Epic extends Task {
 	List<SubTask> subTasks = new ArrayList<>(); // Объектная модель
 //	List<Integer> subTaskIds = new ArrayList<>(); // Плоская модель
 
+	public Epic(String name, Status status, String description) {
+		super(name, status, description);
+	}
+
 	public Epic(String name, String description) {
 		super(name, Status.NEW, description);
 	}
@@ -20,7 +24,7 @@ public class Epic extends Task {
 	}
 
 	public void removeTask(SubTask subTask) {
-
+		subTasks.remove(subTask);
 	}
 
 	public void removeAllTask() {
