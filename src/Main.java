@@ -2,11 +2,14 @@ import model.Epic;
 import model.Status;
 import model.SubTask;
 import model.Task;
+import service.Managers;
 import service.TaskManager;
 
 public class Main {
+
 	public static void main(String[] args) {
-		TaskManager taskManager = new TaskManager();
+
+		TaskManager taskManager = Managers.getDefaults();
 		Task task = taskManager.create(new Task("Новая задача", Status.NEW, "описание"));
 		System.out.println("Create task: " + task);
 

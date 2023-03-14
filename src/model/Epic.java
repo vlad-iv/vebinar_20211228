@@ -24,7 +24,7 @@ public class Epic extends Task {
 	}
 
 	public void removeTask(SubTask subTask) {
-
+		subTasks.remove(subTask);
 	}
 
 	public void updateStatus() {
