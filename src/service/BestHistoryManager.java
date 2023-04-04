@@ -14,4 +14,8 @@ public class BestHistoryManager implements HistoryManager {
 	public List<Task> getAll() {
 		return List.of();
 	}
+
+	@Override
+	public void remove(int id) {
+	}
 }

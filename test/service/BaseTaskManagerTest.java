@@ -21,5 +21,9 @@ public class BaseTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 		public List<Task> getAll() {
 			return Collections.emptyList();
 		}
+
+		@Override
+		public void remove(int id) {
+		}
 	}
 }

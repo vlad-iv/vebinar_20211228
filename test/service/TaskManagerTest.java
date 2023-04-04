@@ -66,5 +66,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
 		public List<Task> getAll() {
 			return Collections.emptyList();
 		}
+
+		@Override
+		public void remove(int id) {
+		}
 	}
 }
