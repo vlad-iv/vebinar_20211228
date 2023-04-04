@@ -1,4 +1,4 @@
-package service;
+package service.history;
 
 import java.util.List;
 
@@ -13,5 +13,9 @@ public class BestHistoryManager implements HistoryManager {
 	@Override
 	public List<Task> getAll() {
 		return List.of();
+	}
+
+	@Override
+	public void remove(int id) {
 	}
 }

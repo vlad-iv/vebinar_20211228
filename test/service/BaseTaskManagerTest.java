@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import model.Task;
+import service.history.HistoryManager;
 
 public class BaseTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 	@Override
@@ -20,6 +21,10 @@ public class BaseTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 		@Override
 		public List<Task> getAll() {
 			return Collections.emptyList();
+		}
+
+		@Override
+		public void remove(int id) {
 		}
 	}
 }

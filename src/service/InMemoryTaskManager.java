@@ -8,6 +8,7 @@ import model.Epic;
 import model.Status;
 import model.SubTask;
 import model.Task;
+import service.history.HistoryManager;
 
 public class InMemoryTaskManager implements TaskManager {
 	HashMap<Integer, Task> tasks;
@@ -98,6 +99,7 @@ public class InMemoryTaskManager implements TaskManager {
 	@Override
 	public void delete(int id) {
 		tasks.remove(id);
+		historyManager.remove(id);
 	}
 
 	@Override

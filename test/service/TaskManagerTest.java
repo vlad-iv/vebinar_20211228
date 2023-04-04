@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import model.Status;
 import model.Task;
+import service.history.HistoryManager;
 
 abstract class TaskManagerTest<T extends TaskManager> {
 	T manager;
@@ -65,6 +66,10 @@ abstract class TaskManagerTest<T extends TaskManager> {
 		@Override
 		public List<Task> getAll() {
 			return Collections.emptyList();
+		}
+
+		@Override
+		public void remove(int id) {
 		}
 	}
 }

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import model.Status;
 import model.Task;
+import service.history.HistoryManager;
 
 class InMemoryTaskManagerTest {
 	InMemoryTaskManager memoryTaskManager;
@@ -79,6 +80,10 @@ class InMemoryTaskManagerTest {
 		@Override
 		public List<Task> getAll() {
 			return Collections.emptyList();
+		}
+
+		@Override
+		public void remove(int id) {
 		}
 	}
 }
