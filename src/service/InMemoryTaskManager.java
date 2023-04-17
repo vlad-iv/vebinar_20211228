@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import dao.TaskRepository;
 import model.Epic;
 import model.SubTask;
 import model.Task;
+import model.TaskData;
 
-public class InMemoryTaskManager implements TaskManager {
+public class InMemoryTaskManager implements TaskManager, TaskRepository {
 	protected HashMap<Integer, Task> tasks;
 	HashMap<Integer, Epic> epics;
 	HashMap<Integer, SubTask> subTasks;
 
 	HistoryManager historyStorage;
-
 	protected int seq = 0;
 
 	private int generateId() {
@@ -73,8 +74,8 @@ public class InMemoryTaskManager implements TaskManager {
 //		epic.setStatus(saved.getStatus());
 //		epic.setSubTasks(saved.getSubTasks());
 //		epics.put(epic.getId(), epic); // Не подходит
-		Epic epic = subTask.getEpic();
-		Epic savedEpic = epics.get(epic.getId());
+		Integer epicId = subTask.getEpicId();
+		Epic savedEpic = epics.get(epicId);
 //		calculateEpicStatus(savedEpic);
 //		savedEpic.calculateEpicStatus();
 		// ....
@@ -96,8 +97,8 @@ public class InMemoryTaskManager implements TaskManager {
 	public void deleteSubTask(int id) {
 		SubTask removeSubTask = subTasks.remove(id);
 
-		Epic epic = removeSubTask.getEpic();
-		Epic epicSaved = epics.get(epic.getId());
+		int epicId = removeSubTask.getEpicId();
+		Epic epicSaved = epics.get(epicId);
 
 		epicSaved.getSubTasks().remove(removeSubTask);
 		calculateStatus(epicSaved);
@@ -111,4 +112,51 @@ public class InMemoryTaskManager implements TaskManager {
 	List<Task> getHistory() {
 		return historyStorage.getAll();
 	}
+
+	@Override
+	public TaskData load() {
+		List<Task> tasks = new ArrayList<>(this.tasks.values());
+		tasks.addAll(this.subTasks.values());
+		tasks.addAll(this.epics.values());
+		List<Integer> history = new ArrayList<>();
+		for (Task task : historyStorage.getAll()) {
+			history.add(task.getId());
+		}
+
+		TaskData taskData = new TaskData(tasks, history);
+		return taskData;
+	}
+
+	@Override
+	public void save(TaskData taskData) {
+		int maxId = 0;
+		HashMap<Integer, Task> taskById = new HashMap<>();
+		for (Task task : taskData.getTasks()) {
+			int id = task.getId();
+			taskById.put(id, task);
+			switch (task.getType()) {
+				case TASK:
+					tasks.put(id, task);
+					break;
+				case SUBTASK:
+					subTasks.put(id, (SubTask) task);
+					break;
+				case EPIC:
+					epics.put(id, (Epic) task);
+					break;
+			}
+			if (maxId < id) {
+				maxId = id;
+			}
+		}
+
+		// TODO Заполнить подзадачи у эпика.
+
+		seq = maxId;
+		for (Integer id : taskData.getHistory()) {
+			historyStorage.add(taskById.get(id));
+		}
+	}
+
+
 }

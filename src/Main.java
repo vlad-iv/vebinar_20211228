@@ -4,6 +4,7 @@ import model.Task;
 import service.FileBackedTaskManager;
 import service.Managers;
 import service.TaskManager;
+import service.TaskService;
 
 public class Main {
 	public static void main(String[] args) {
@@ -21,7 +22,16 @@ public class Main {
 		taskManager.delete(taskFromManager.getId());
 		System.out.println("Delete: " + task);
 
-		TaskManager taskManagerReload = new FileBackedTaskManager(Managers.getDefaultHistory(), new File("task.csv"), true);
-		// TODO менеджер == менеджер2
+//		TaskManager taskManagerReload = FileBackedTaskManager.loadFromFile(Path.of("task.csv"));
+
+		TaskManager taskManagerReload = FileBackedTaskManager.loadFromFile(new File("task.csv"));
+		// TODO taskManager == taskManagerReload
+
+		TaskManager taskServiceReload = TaskService.loadFromFile("task.csv");
+		// TODO taskManager == taskServiceReload
+
+
 	}
+
+
 }

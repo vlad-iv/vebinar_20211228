@@ -25,22 +25,48 @@ import model.TaskType;
 public class FileBackedTaskManager extends InMemoryTaskManager {
 	private final File file;
 
-	public FileBackedTaskManager(HistoryManager historyManager) {
-		this(historyManager, new File("task.csv"), false);
-	}
-
-	public FileBackedTaskManager(HistoryManager historyManager, File file) {
-		this(historyManager, file, false);
+	public FileBackedTaskManager() {
+		this(new File("task.csv"));
 	}
 
 
-	public FileBackedTaskManager(HistoryManager historyManager, File file, boolean load) {
-		super(historyManager);
+	// ПЛОХОЕ
+//	public FileBackedTaskManager(File file, boolean load) {
+//		super(new InMemoryHistoryManager());
+//		this.file = file;
+//		if (load) {
+//			loadFromFile();
+//		}
+//	}
+//	public static FileBackedTaskManager loadFromFile(File file) {
+//		final FileBackedTaskManager manager = new FileBackedTaskManager(file, true);
+//		return manager;
+//	}
+
+	// ХОРОШЕЕ
+	public FileBackedTaskManager(File file) {
+		super(Managers.getDefaultHistory());
 		this.file = file;
-		if (load) {
-			load();
-		}
 	}
+//	public FileBackedTaskManager(String fileName) {
+//		super(new InMemoryHistoryManager());
+//		this.file = file;
+//	}
+//	public FileBackedTaskManager(Path path) {
+//		super(new InMemoryHistoryManager());
+//		this.file = file;
+//	}
+
+	public void init() {
+		loadFromFile();
+	}
+
+	public static FileBackedTaskManager loadFromFile(File file) {
+		FileBackedTaskManager manager = new FileBackedTaskManager(file);
+		manager.init();
+		return manager;
+	}
+
 
 	@Override
 	public List<Task> getAll() {
@@ -94,12 +120,22 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 		final String[] columns = value.split(",");
 
 
-//		switch (type = valueOf(columns[1])) {
-//			case TASK:
-//			case SUBTASK:
+		TaskType type = TaskType.valueOf(columns[1]);
+		Task task = null;
+		switch (type) {
+			case TASK:
+				task = new Task();
+				break;
+
+			case SUBTASK:
+				task = new SubTask();
+				break;
+
 //			case EPIC:
-//		}
-		return null;
+//				task = new Epic();
+//				break;
+		}
+		return task;
 	}
 
 	static String toString(HistoryManager manager) {
@@ -136,7 +172,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 	}
 
 	// Восстановление из в файла
-	private void load() {
+	private void loadFromFile() {
 //		try {
 //			final String s = Files.readString(file.toPath());
 //			s.split("\n");
@@ -178,8 +214,4 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
 	}
 
-	public static FileBackedTaskManager loadFromFile(File file) {
-		final FileBackedTaskManager manager = new FileBackedTaskManager(Managers.getDefaultHistory(), file, true);
-		return manager;
-	}
 }
