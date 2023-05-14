@@ -1,19 +1,36 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 import dao.TaskRepository;
+import exception.ContrainException;
 import model.Epic;
 import model.SubTask;
 import model.Task;
 import model.TaskData;
 
 public class InMemoryTaskManager implements TaskManager, TaskRepository {
-	protected HashMap<Integer, Task> tasks;
+	HashMap<Integer, Task> tasks;
 	HashMap<Integer, Epic> epics;
 	HashMap<Integer, SubTask> subTasks;
+
+	TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
+//	TreeMap<Instant, Task> prioritizedTasks = new TreeMap<>();
+
+//	void add(Task task) {
+//		Task original = tasks.get(task.getId()); // 1
+//		prioritizedTasks.remove(original); // O(logN)
+////		Instant prevStartTime = original.getStartTime();
+////		original.setStartTime(task.getStartTime());
+////		prioritizedTasks.remove(prevStartTime); // O(logN)
+//		tasks.put(task); // 1
+//		prioritizedTasks.add(original); //  O(logN)
+////		prioritizedTasks.put(prevStartTime, original); // O(logN)
+//	}
 
 	HistoryManager historyStorage;
 	protected int seq = 0;
@@ -32,10 +49,21 @@ public class InMemoryTaskManager implements TaskManager, TaskRepository {
 	@Override
 	public Task create(Task task) {
 		task.setId(generateId());
+		add(task);
 		tasks.put(task.getId(), task);
 		return task;
 	}
 
+	private void add(Task task) {
+		for (Task t : prioritizedTasks) {
+
+			// Проверка на пересечение	task1 c task
+			// выходим если пересеклись.
+			// выбросить исключение
+			throw new ContrainException("Пересечение с задачей ....");
+		}
+		prioritizedTasks.add(task);
+	}
 	@Override
 	public Task get(int id) {
 		Task task = tasks.get(id);
