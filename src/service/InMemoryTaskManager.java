@@ -1,10 +1,14 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 import dao.TaskRepository;
+import exception.NotFoundException;
+import exception.ValidationException;
 import model.Epic;
 import model.SubTask;
 import model.Task;
@@ -15,8 +19,10 @@ public class InMemoryTaskManager implements TaskManager, TaskRepository {
 	final HashMap<Integer, Epic> epics;
 	final HashMap<Integer, SubTask> subTasks;
 
-	private final HistoryManager historyManager;
+	TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
+//	TreeMap<Instant, Task> prioritizedTasks = new TreeMap<>();
 
+	private final HistoryManager historyManager;
 	protected int seq = 0;
 
 	private int generateId() {
@@ -32,35 +38,55 @@ public class InMemoryTaskManager implements TaskManager, TaskRepository {
 		this.subTasks = new HashMap<>();
 	}
 
-
 	@Override
 	public Task create(Task task) {
 		task.setId(generateId());
+		addPrioritized(task);
 		tasks.put(task.getId(), task);
 		return task;
 	}
 
+	private void addPrioritized(Task task) {
+		for (Task t : prioritizedTasks) {
+
+			// Проверка на пересечение	task1 c task
+			// выходим если пересеклись.
+			// выбросить исключение
+			throw new ValidationException("Пересечение с задачей ....");
+		}
+		prioritizedTasks.add(task);
+	}
 
 	@Override
 	public Task get(int id) {
 		Task task = tasks.get(id);
-//		if (task == null) {
-//			return null;
-//		}
-		historyManager.add(task);
+		if (task == null) {
+			throw new NotFoundException("Задача с ид=" + id);
+		}
+//		Optional.of(task)
+//				.orElseThrow(() -> new RuntimeException("Задача с ид=" + id));
 		return task;
 	}
 
 	@Override
 	public void update(Task task) {
-		tasks.put(task.getId(), task);
+		Task original = tasks.get(task.getId()); // 1
+		if (original == null) {
+			throw new NotFoundException("Task id=" + task.getId());
+		}
+		addPrioritized(task);
+		prioritizedTasks.remove(original); // O(logN)
+		prioritizedTasks.add(task); //  O(logN)
+//		prioritizedTasks.remove(original.getStartTime()); // O(logN)
+//		prioritizedTasks.put(task.getStartTime(), task); // O(logN)
+
+		tasks.put(task.getId(), task); // 1
 //		Task saved = tasks.get(task.getId());
 //		saved.setName(task.getName());
 //		saved.setStatus(task.getStatus());
 		// ....
 
 	}
-
 
 	@Override
 	public void updateEpic(Epic epic) {
@@ -73,7 +99,6 @@ public class InMemoryTaskManager implements TaskManager, TaskRepository {
 		// ....
 
 	}
-
 
 	@Override
 	public void updateSubTask(SubTask subTask) {
@@ -89,12 +114,10 @@ public class InMemoryTaskManager implements TaskManager, TaskRepository {
 
 	}
 
-
 	@Override
 	public List<Task> getAll() {
 		return new ArrayList<>(tasks.values());
 	}
-
 
 	@Override
 	public void delete(int id) {
