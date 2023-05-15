@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
 
-import dao.TaskRepository;
 import exception.ContrainException;
 import model.Epic;
 import model.SubTask;
 import model.Task;
 import model.TaskData;
+import repository.TaskRepository;
 
 public class InMemoryTaskManager implements TaskManager, TaskRepository {
 	HashMap<Integer, Task> tasks;
@@ -157,6 +157,9 @@ public class InMemoryTaskManager implements TaskManager, TaskRepository {
 
 	@Override
 	public void save(TaskData taskData) {
+		if (taskData == null) {
+			return;
+		}
 		int maxId = 0;
 		HashMap<Integer, Task> taskById = new HashMap<>();
 		for (Task task : taskData.getTasks()) {

@@ -2,11 +2,11 @@ package service;
 
 import java.util.List;
 
-import dao.CSVTaskRepository;
-import dao.TaskRepository;
 import model.Epic;
 import model.SubTask;
 import model.Task;
+import repository.CSVTaskRepository;
+import repository.TaskRepository;
 
 /**
  * File TaskManager.

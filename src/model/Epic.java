@@ -29,4 +29,11 @@ public class Epic extends Task {
 	public void setSubTasks(List<Integer> subTasks) {
 		this.subTasks = subTasks;
 	}
+
+	@Override
+	public String toString() {
+		return "Epic{" +
+				"subTasks=" + subTasks +
+				"} " + super.toString();
+	}
 }

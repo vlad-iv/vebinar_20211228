@@ -57,7 +57,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 //		this.file = file;
 //	}
 
-	public void init() {
+	protected void init() {
 		loadFromFile();
 	}
 
@@ -157,7 +157,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 	}
 
 	// Сохранение в файл
-	private void save() {
+	protected void save() {
 		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
 			// TODO  Заголовок id,type,name,status,description,epic
 			for (Map.Entry<Integer, Task> entry : tasks.entrySet()) {
@@ -172,7 +172,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 	}
 
 	// Восстановление из в файла
-	private void loadFromFile() {
+	protected void loadFromFile() {
 //		try {
 //			final String s = Files.readString(file.toPath());
 //			s.split("\n");
