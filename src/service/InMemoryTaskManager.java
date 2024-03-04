@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import dao.TaskRepository;
 import model.Epic;
 import model.Status;
 import model.SubTask;
 import model.Task;
+import model.TaskData;
 
-public class InMemoryTaskManager implements TaskManager {
-	HashMap<Integer, Task> tasks;
-	HashMap<Integer, Epic> epics;
-	HashMap<Integer, SubTask> subTasks;
+public class InMemoryTaskManager implements TaskManager, TaskRepository {
+	final HashMap<Integer, Task> tasks;
+	final HashMap<Integer, Epic> epics;
+	final HashMap<Integer, SubTask> subTasks;
+
 	private final HistoryManager historyManager;
 
 	protected int seq = 0;
@@ -138,5 +141,51 @@ public class InMemoryTaskManager implements TaskManager {
 	public List<Task> getHistory() {
 		return historyManager.getAll();
 	}
+
+	@Override
+	public TaskData load() {
+		List<Task> tasks = new ArrayList<>(this.tasks.values());
+		tasks.addAll(this.subTasks.values());
+		tasks.addAll(this.epics.values());
+		List<Integer> history = new ArrayList<>();
+		for (Task task : historyManager.getAll()) {
+			history.add(task.getId());
+		}
+
+		TaskData taskData = new TaskData(tasks, history);
+		return taskData;
+	}
+
+	@Override
+	public void save(TaskData taskData) {
+		int maxId = 0;
+		HashMap<Integer, Task> taskById = new HashMap<>();
+		for (Task task : taskData.getTasks()) {
+			int id = task.getId();
+			taskById.put(id, task);
+			switch (task.getType()) {
+				case TASK:
+					tasks.put(id, task);
+					break;
+				case SUBTASK:
+					subTasks.put(id, (SubTask) task);
+					break;
+				case EPIC:
+					epics.put(id, (Epic) task);
+					break;
+			}
+			if (maxId < id) {
+				maxId = id;
+			}
+		}
+
+		// TODO Заполнить подзадачи у эпика.
+
+		seq = maxId;
+		for (Integer id : taskData.getHistory()) {
+			historyManager.add(taskById.get(id));
+		}
+	}
+
 
 }

@@ -5,6 +5,7 @@ import model.Status;
 import model.SubTask;
 import model.Task;
 import service.FileBackedTaskManager;
+import service.FileTaskService;
 import service.Managers;
 import service.TaskManager;
 
@@ -37,6 +38,10 @@ public class Main {
 
 		TaskManager taskManagerReload = FileBackedTaskManager.loadFromFile(new File("task.csv"));
 		// TODO taskManager == taskManagerReload
+
+		TaskManager taskServiceReload = FileTaskService.loadFromFile("task.csv");
+		// TODO taskManager == taskServiceReload
+
 
 	}
 
