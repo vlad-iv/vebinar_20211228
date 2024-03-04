@@ -12,7 +12,7 @@ public class Task {
 		this.description = description;
 	}
 
-	public Epic getEpic() {
+	public Integer getEpicId() {
 		return null;
 	}
 

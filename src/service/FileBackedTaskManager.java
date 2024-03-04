@@ -9,9 +9,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import converter.TaskConverter;
 import model.Epic;
 import model.Status;
 import model.SubTask;
@@ -24,6 +26,7 @@ import model.TaskType;
  * @author Vladimir Ivanov (ivanov.vladimir.l@gmail.com)
  */
 public class FileBackedTaskManager extends InMemoryTaskManager {
+	HashMap<TaskType, TaskConverter> converters;
 	private final File file;
 
 	public FileBackedTaskManager() {
@@ -121,7 +124,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
 	// Todo
 	private String toString(Task task) {
-		return "";
+//		return converters.get(task.getType()).toString(task);
+		return task.getId() + "," + task.getName() + "," + task.getDescription() + "," + task.getEpicId();
 	}
 
 	// Todo
@@ -151,11 +155,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 	}
 
 	static String toString(HistoryManager manager) {
-		StringBuilder sb = new StringBuilder();
+		String sb = "";
 		for (Task task : manager.getAll()) {
 			// TODO
 		}
-		return sb.toString();
+		return sb;
 	}
 
 	static List<Integer> historyFromString(String value) {
@@ -178,7 +182,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 			}
 			// TODO подзадачи , эпики, история
 		} catch (IOException e) {
-			throw new RuntimeException(e); // TODO ManagerSaveException
+			throw new RuntimeException("Ошибка в файле: " + file.getAbsolutePath(), e); // TODO ManagerSaveException
 		}
 
 	}
