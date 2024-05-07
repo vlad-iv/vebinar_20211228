@@ -2,11 +2,15 @@ package service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import model.Task;
 
 public class InMemoryHistoryManager implements HistoryManager {
+	LinkedHashMap map;
+	LinkedList list;
 
 	private static class Node {
 		Task item;
@@ -69,7 +73,8 @@ public class InMemoryHistoryManager implements HistoryManager {
 	// Удаление из связанного списка
 	private void removeNode(Node node) {
 		// TODO
-
+//		node.prev.next == node // так было
+		node.prev.next = node.next; // так стало
 		history.remove(node.item.getId());
 	}
 }
