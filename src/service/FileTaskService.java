@@ -81,6 +81,16 @@ public class FileTaskService implements TaskManager {
 	}
 
 	@Override
+	public Epic createEpic(Epic epic) {
+		return null;
+	}
+
+	@Override
+	public SubTask createSubTask(SubTask subTask) {
+		return null;
+	}
+
+	@Override
 	public List<Task> getHistory() {
 		return taskManager.getHistory();
 	}

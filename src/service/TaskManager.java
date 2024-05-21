@@ -23,5 +23,9 @@ public interface TaskManager {
 
 	void deleteSubTask(int id);
 
+	Epic createEpic(Epic epic);
+
+	SubTask createSubTask(SubTask subTask);
+
 	List<Task> getHistory();
 }

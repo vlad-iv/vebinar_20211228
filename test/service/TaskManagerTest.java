@@ -1,71 +1,74 @@
 package service;
 
-import static model.Status.NEW;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import model.Status;
 import model.Task;
 
 abstract class TaskManagerTest<T extends TaskManager> {
-
-	T taskManager;
-
+	T manager;
+	private Task task;
 
 	abstract T createManager();
 
 	@BeforeEach
-	void beforeEach() {
-		taskManager = createManager();
+	void init() {
+		manager = createManager();
+
+		task = manager.create(new Task("Новая задача", Status.NEW, "описание"));
 	}
 
 	@Test
-	void create() {
-		Task task = new Task(0, "test", NEW, "testing", Instant.now(), 123);
+	void shouldGetTasks() {
+		// подготовка данных
 
-		Task result = taskManager.create(task);
-		Task returnTask = taskManager.get(task.getId());
+		// тестируем
+		List<Task> all = manager.getAll();
 
-		assertNotNull(result);
-		assertTrue(result.getId() > 0, "Task id");
-		assertEquals(task.getName(), result.getName(), "Task name");
+		// проверяем
+		assertEquals(all.size(), 1);
+		assertEquals(all.get(0), task);
 	}
 
+
 	@Test
-	void get() {
-		Task task = new Task(0, "test", NEW, "testing", Instant.now(), 123);
-		Task result = taskManager.create(task);
+	void taskManagers() {
+		EmptyHistoryManager historyManager = new EmptyHistoryManager();
+		InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager(historyManager);
 
-		Task returnTask = taskManager.get(task.getId());
-
+//		assertEquals(inMemoryTaskManager, memoryTaskManager, "Менеджеры должны совпадать");
+		assertEqualsTaskManager(inMemoryTaskManager, manager, "Менеджеры должны совпадать");
+		assertEqualsInMemoryTaskManager(inMemoryTaskManager, (InMemoryTaskManager) manager, "Менеджеры должны совпадать");
 	}
 
-	@Test
-	void update() {
+
+	private static void assertEqualsInMemoryTaskManager(InMemoryTaskManager expected, InMemoryTaskManager actual, String message) {
+
+		assertEquals(expected.tasks, actual.tasks, message + ", tasks");
 	}
 
-	@Test
-	void updateEpic() {
+	private static void assertEqualsTaskManager(TaskManager expected, TaskManager actual, String message) {
+		assertEquals(expected.getAll(), actual.getAll(), message + ", tasks");
 	}
 
-	@Test
-	void updateSubTask() {
-	}
+	private static class EmptyHistoryManager implements HistoryManager {
+		@Override
+		public void add(Task task) {
+		}
 
-	@Test
-	void getAll() {
-	}
+		@Override
+		public List<Task> getAll() {
+			return Collections.emptyList();
+		}
 
-	@Test
-	void delete() {
-	}
-
-	@Test
-	void deleteSubTask() {
+		@Override
+		public void remove(int id) {
+		}
 	}
 }

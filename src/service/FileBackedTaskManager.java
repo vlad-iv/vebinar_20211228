@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -133,24 +132,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 	private Task fromString(String value) {
 		final String[] columns = value.split(",");
 		// TODO
-		int id = 0;
 		String name = "";
 		String description = "";
 		Status status = null;
+		Integer epicId = null;
+
 		TaskType type = TaskType.valueOf(columns[1]);
 		Task task = null;
 		switch (type) {
 			case TASK:
-				task = new Task(id, name, status, description, Instant.now(), 0);
+				task = new Task(name, status, description);
 				break;
 
 			case SUBTASK:
-				task = new SubTask(id, name, status, description, Instant.now(), 0, 0);
+				task = new SubTask(name, status, description, epicId);
 				break;
 
-			case EPIC:
-				task = new Epic(id, name, status, description, Instant.now(), 0);
-				break;
+//			case EPIC:
+//				task = new Epic();
+//				break;
 		}
 		return task;
 	}

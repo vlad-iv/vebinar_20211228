@@ -1,14 +1,16 @@
 package model;
 
 public enum Status {
-	NEW("Новый"),
-	IN_PROGRESS("В процессе"),
-	DONE("Завершен");
+	NEW("Новый", 3),
+	IN_PROGRESS("В процессе", 6),
+	DONE("Завершен", 9);
 
 	String nameStatus;
+	int value;
 
-	Status(String nameStatus) {
+	Status(String nameStatus, int value) {
 		this.nameStatus = nameStatus;
+		this.value = value;
 	}
 
 	String getName() {

@@ -1,12 +1,10 @@
 package model;
 
-import java.time.Instant;
-
 public class SubTask extends Task {
-	Integer epicId;
+	private Integer epicId;
 
-	public SubTask(int id, String name, Status status, String description, Instant startTime, int duration, Integer epicId) {
-		super(id, name, status, description, startTime, duration);
+	public SubTask(String name, Status status, String description, Integer epicId) {
+		super(name, status, description);
 		this.epicId = epicId;
 	}
 
